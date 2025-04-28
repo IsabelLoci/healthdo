@@ -1,5 +1,6 @@
 package com.example.calorietrackerapp
 
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -15,9 +16,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,6 +39,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -52,6 +61,7 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController, startDestination = "main") {
                     composable("main") { MainScreen(navController) }
                     composable("register") { RegisterScreen(navController) }
+                    composable("home") { HomeScreen(navController)}
                 }
             }
         }
@@ -159,8 +169,9 @@ class MainActivity : ComponentActivity() {
                     // Register button
                     Button(
                         onClick = {
-                            // Register button logic TBA
+                            navController.navigate("home")
                         },
+                        modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF55745D))
                     ) {
                         Text("Register")
@@ -175,4 +186,111 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+
+    @Composable
+    fun HomeScreen(navController: NavController) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Today header
+                Text(
+                    text = "Today",
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // summary of calories
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp)
+                        .background(Color(0xFF55745D))
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = "2078 Calories Left",
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Search Meal Box
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color(0xFFF5F5F5))
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OutlinedTextField(
+                        value = "",
+                        onValueChange = { },
+                        placeholder = { Text("Find your meal's calories here...") },
+                        modifier = Modifier.weight(1f),
+                        maxLines = 1,
+                        singleLine = true
+                    )
+                    IconButton(onClick = { /* TODO: Search Action */ }) {
+                        Icon(Icons.Default.Search, contentDescription = "Search")
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Today's Meals Title
+                Text(
+                    text = "Today's Meals",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                // Meal List
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(listOf(
+                        "Breakfast: Toast with Egg - 670 Calories 🍞",
+                        "Lunch: Salad with Boiled Egg - 300 Calories 🥗",
+                        "Dinner: Instant Noodles with Seaweed - 400 Calories 🍜"
+                    )) { meal ->
+                        Text(text = meal)
+                    }
+                }
+            }
+
+            // Bottom Navigation Bar
+            Row(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .background(Color(0xFFF5F5F5))
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                TextButton(onClick = { /* TODO */ }) { Text("Today's Calories") }
+                TextButton(onClick = { /* TODO */ }) { Text("Search Meal") }
+                TextButton(onClick = { /* TODO */ }) { Text("Meal Planning") }
+            }
+        }
+    }
+
 }
