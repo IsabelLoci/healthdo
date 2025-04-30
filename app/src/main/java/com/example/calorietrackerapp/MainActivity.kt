@@ -29,6 +29,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -190,6 +192,12 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun HomeScreen(navController: NavController) {
+
+        val viewModel: MealSearchViewModel = viewModel()
+        val results by viewModel.searchResults.collectAsState()
+
+        var searchQuery by remember { mutableStateOf("")}
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -231,18 +239,22 @@ class MainActivity : ComponentActivity() {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Search Meal Box
+                // search meal box
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .height(70.dp)
                         .clip(RoundedCornerShape(12.dp))
                         .background(Color(0xFFF5F5F5))
                         .padding(horizontal = 8.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     OutlinedTextField(
-                        value = "",
-                        onValueChange = { },
+                        value = searchQuery,
+                        onValueChange = {
+                            searchQuery = it
+                            if (it.isNotBlank()) viewModel.searchMeal(it)
+                        },
                         placeholder = { Text("Find your meal's calories here...") },
                         modifier = Modifier.weight(1f),
                         maxLines = 1,
@@ -267,12 +279,11 @@ class MainActivity : ComponentActivity() {
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(listOf(
-                        "Breakfast: Toast with Egg - 670 Calories 🍞",
-                        "Lunch: Salad with Boiled Egg - 300 Calories 🥗",
-                        "Dinner: Instant Noodles with Seaweed - 400 Calories 🍜"
-                    )) { meal ->
-                        Text(text = meal)
+                    items(results) { meal ->
+                        Text(
+                            text = "${meal.name}: ${meal.calories} Calories",
+                            modifier = Modifier.padding(8.dp)
+                        )
                     }
                 }
             }
@@ -286,9 +297,9 @@ class MainActivity : ComponentActivity() {
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                TextButton(onClick = { /* TODO */ }) { Text("Today's Calories") }
-                TextButton(onClick = { /* TODO */ }) { Text("Search Meal") }
-                TextButton(onClick = { /* TODO */ }) { Text("Meal Planning") }
+                TextButton(onClick = { /* TBA */ }) { Text("Today's Calories") }
+                TextButton(onClick = { /* TBA */ }) { Text("Search Meal") }
+                TextButton(onClick = { /* TBA */ }) { Text("Meal Planning") }
             }
         }
     }
