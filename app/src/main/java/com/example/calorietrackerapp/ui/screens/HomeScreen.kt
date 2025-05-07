@@ -19,7 +19,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,16 +36,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.calorietrackerapp.MealSearchViewModel
+import com.example.calorietrackerapp.viewmodel.MealSearchViewModel
 import com.example.calorietrackerapp.ui.screens.components.NavBar
+import com.example.calorietrackerapp.ui.screens.components.SearchMealFeature
 
 @Composable
 fun HomeScreen(navController: NavController) {
 
-    val viewModel: MealSearchViewModel = viewModel()
-    val results by viewModel.searchResults.collectAsState()
 
-    var searchQuery by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -89,53 +86,9 @@ fun HomeScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // search meal box
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xFFF5F5F5))
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedTextField(
-                    value = searchQuery,
-                    onValueChange = {
-                        searchQuery = it
-                        if (it.isNotBlank()) viewModel.searchMeal(it)
-                    },
-                    placeholder = { Text("Find your meal's calories here...") },
-                    modifier = Modifier.weight(1f),
-                    maxLines = 1,
-                    singleLine = true
-                )
-                IconButton(onClick = { /* TODO: Search Action */ }) {
-                    Icon(Icons.Default.Search, contentDescription = "Search")
-                }
-            }
+            SearchMealFeature()
 
-            Spacer(modifier = Modifier.height(24.dp))
 
-            // Today's Meals Title
-            Text(
-                text = "Today's Meals",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            // Meal List
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(results) { meal ->
-                    Text(
-                        text = "${meal.name}: ${meal.calories} Calories",
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
-            }
         }
 
         NavBar(navController)

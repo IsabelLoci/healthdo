@@ -1,5 +1,6 @@
-package com.example.calorietrackerapp
+package com.example.calorietrackerapp.network
 
+import com.example.calorietrackerapp.model.EdamamResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

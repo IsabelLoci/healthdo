@@ -1,9 +1,10 @@
-package com.example.calorietrackerapp
+package com.example.calorietrackerapp.viewmodel
 
-import FoodItem
+import com.example.calorietrackerapp.model.FoodItem
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.calorietrackerapp.network.RetrofitInstance
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
