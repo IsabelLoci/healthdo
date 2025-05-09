@@ -10,11 +10,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -36,14 +38,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.calorietrackerapp.viewmodel.MealSearchViewModel
+import com.example.calorietrackerapp.ui.screens.components.CalorieSummaryDashboard
+import com.example.calorietrackerapp.ui.viewmodel.MealSearchViewModel
 import com.example.calorietrackerapp.ui.screens.components.NavBar
 import com.example.calorietrackerapp.ui.screens.components.SearchMealFeature
 
 @Composable
 fun HomeScreen(navController: NavController) {
-
-
 
     Box(
         modifier = Modifier
@@ -67,22 +68,8 @@ fun HomeScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // summary of calories
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-                    .background(Color(0xFF55745D))
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = "2078 Calories Left",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
+            // Calorie Summary Dashboard to report to the user about their status
+            CalorieSummaryDashboard(500, 2500, 0.4f, 0.2f, 0.2f)
 
             Spacer(modifier = Modifier.height(24.dp))
 

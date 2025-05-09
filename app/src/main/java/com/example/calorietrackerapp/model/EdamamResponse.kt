@@ -17,7 +17,3 @@ data class Nutrients(
     val ENERC_KCAL: Double
 )
 
-data class FoodItem(
-    val name: String,
-    val calories: Double
-)

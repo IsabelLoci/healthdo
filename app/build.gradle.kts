@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.devtools.ksp") version "2.1.0-1.0.29"
+
 }
 
 android {
@@ -64,5 +66,19 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
-    
+
+    // Room (for database support)
+    implementation("androidx.room:room-runtime:2.7.1")
+    ksp("androidx.room:room-compiler:2.7.1")
+
+// Kotlin coroutines Flow support
+    implementation("androidx.room:room-ktx:2.7.1")
+
+// Optional: Paging support (if you plan to use Paging 3)
+    implementation("androidx.room:room-paging:2.7.1")
+
+    implementation("androidx.room:room-migration:2.7.1")
+
+
+
 }
