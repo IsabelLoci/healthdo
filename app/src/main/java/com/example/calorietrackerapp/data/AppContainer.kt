@@ -13,6 +13,7 @@ interface AppContainer {
     val foodItemRepository: FoodItemRepository
     val mealRecordRepository: MealRecordRepository
     val dailySummaryRepository: DailySummaryRepository
+    val foodItemMealRecordCrossRefRepository : FoodItemMealRecordCrossRefRepository
 }
 
 class DefaultAppContainer(context: Context) : AppContainer {
@@ -31,6 +32,10 @@ class DefaultAppContainer(context: Context) : AppContainer {
         OfflineDailySummaryRepository(database.dailySummaryDao())
     }
 
+    override val foodItemMealRecordCrossRefRepository : FoodItemMealRecordCrossRefRepository by lazy {
+        OfflineFoodItemMealRecordCrossRefRepository(database.foodItemMealRecordCrossRefDao())
+    }
+
     val mockFoodItems = listOf(
         FoodItem(foodName = "Banana", kcal = 89, imageUrl = "https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg"),
         FoodItem(foodName = "Egg", kcal = 78, imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/7b/Egg_%28whole%29.jpg"),
@@ -40,7 +45,6 @@ class DefaultAppContainer(context: Context) : AppContainer {
         FoodItem(foodName = "Rice", kcal = 200, imageUrl = "https://upload.wikimedia.org/wikipedia/commons/6/60/Plain_rice.jpg"),
         FoodItem(foodName = "Chicken Breast", kcal = 165, imageUrl = "https://upload.wikimedia.org/wikipedia/commons/2/20/Grilled_Chicken_Breast.jpg")
     )
-
 
 
     init{

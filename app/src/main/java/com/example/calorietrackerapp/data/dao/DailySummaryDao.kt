@@ -17,9 +17,9 @@ interface DailySummaryDao {
     @Update
     suspend fun updateSummary(summary: DailySummary)
 
-    @Query("SELECT * FROM daily_summaries WHERE date = :date")
-    fun getSummaryByDate(date: LocalDate): Flow<DailySummary>
+    @Query("SELECT * FROM daily_summaries WHERE date = :date LIMIT 1")
+    fun getSummaryByDate(date: LocalDate): Flow<DailySummary?>
 
     @Query("SELECT * FROM daily_summaries ORDER BY date DESC")
-    fun getAllSummaries(): Flow<List<DailySummary>>
+    fun getAllSummaries(): Flow<List<DailySummary>?>
 }

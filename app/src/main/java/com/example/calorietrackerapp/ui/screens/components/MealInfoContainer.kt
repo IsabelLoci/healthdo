@@ -15,9 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.calorietrackerapp.data.entity.FoodItem
 
 @Composable
-fun MealInfoContainer(name: String, calories: Int) {
+fun MealInfoContainer(foodItem: FoodItem) {
     // TODO: Add a feature to allow user to click on the container and pop up to ask the user to add this in today's consumption
 
     Column(
@@ -29,8 +30,9 @@ fun MealInfoContainer(name: String, calories: Int) {
             modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
             horizontalArrangement = Arrangement.Center
         ) {
-            Text(text = name, modifier = Modifier.padding(horizontal = 3.dp))
-            Text(text = calories.toString(), modifier = Modifier.padding(horizontal = 3.dp))
+            Text(text = foodItem.foodName, modifier = Modifier.padding(horizontal = 3.dp))
+            Text(text = "${foodItem.kcal.toString()} kcal", modifier = Modifier.padding(horizontal = 3.dp))
+
         }
 
         Spacer(modifier = Modifier.height(4.dp)) // spacing above the line
@@ -38,7 +40,7 @@ fun MealInfoContainer(name: String, calories: Int) {
         HorizontalDivider(
             color = Color.Black,
             thickness = 1.dp,
-            modifier = Modifier.fillMaxWidth(0.6f) // 70% width and centered
+            modifier = Modifier.fillMaxWidth(0.6f)
         )
     }
 }

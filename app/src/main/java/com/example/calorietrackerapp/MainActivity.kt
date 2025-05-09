@@ -1,11 +1,13 @@
 package com.example.calorietrackerapp
 
 import android.graphics.drawable.Icon
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -49,6 +51,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.calorietrackerapp.ui.screens.AddNewMealRecord
 import com.example.calorietrackerapp.ui.screens.AuthLandingScreen
 import com.example.calorietrackerapp.ui.screens.HomeScreen
 import com.example.calorietrackerapp.ui.screens.MealRecord
@@ -58,6 +61,7 @@ import com.example.calorietrackerapp.ui.theme.CalorieTrackerAppTheme
 
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -71,6 +75,7 @@ class MainActivity : ComponentActivity() {
                     composable("home") { HomeScreen(navController)}
                     composable("searchMeal") { SearchMeal(navController) }
                     composable("mealRecord") { MealRecord(navController) }
+                    composable("addNewMealRecord") { AddNewMealRecord(navController) }
 
                 }
             }

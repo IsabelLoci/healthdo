@@ -15,8 +15,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -75,7 +77,13 @@ fun HomeScreen(navController: NavController) {
 
             SearchMealFeature()
 
+        }
 
+        FloatingActionButton(
+            onClick = { navController.navigate("AddNewMealRecord")},
+            modifier = Modifier.align(Alignment.BottomEnd).padding(end=16.dp, bottom = 72.dp)
+        ) {
+            Icon(Icons.Default.Add, contentDescription = "Add")
         }
 
         NavBar(navController)

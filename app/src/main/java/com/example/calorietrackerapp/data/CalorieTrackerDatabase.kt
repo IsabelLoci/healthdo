@@ -35,7 +35,7 @@ abstract class CalorieTrackerDatabase : RoomDatabase() {
         fun getDatabase(context: Context): CalorieTrackerDatabase {
             return Instance?: synchronized(this){
                 Room.databaseBuilder(context, CalorieTrackerDatabase::class.java, "carlorie_tracker_database")
-                    .fallbackToDestructiveMigration(true)
+                    .fallbackToDestructiveMigration()
                     .build()
                     .also{ Instance = it }
             }

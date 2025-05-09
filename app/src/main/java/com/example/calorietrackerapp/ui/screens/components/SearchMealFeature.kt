@@ -1,6 +1,7 @@
 package com.example.calorietrackerapp.ui.screens.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -32,21 +34,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.calorietrackerapp.data.entity.FoodItem
 import com.example.calorietrackerapp.ui.AppViewModelProvider
 import com.example.calorietrackerapp.ui.viewmodel.MealSearchViewModel
 
-@Composable
-fun SearchMealFeature(viewModel: MealSearchViewModel = viewModel(factory = AppViewModelProvider.Factory)){
+data class CheckboxConfig(
+    val selectedFoodItems: List<FoodItem>,
+    val onToggleFoodItem: (FoodItem) -> Unit,
+    val totalCalories: Int,
+)
 
-    // TODO: Add a form to allow user to add the search result into their meal record
+@Composable
+fun SearchMealFeature(viewModel: MealSearchViewModel = viewModel(factory = AppViewModelProvider.Factory), checkboxConfig: CheckboxConfig? = null){
+
+    //TODO after a checkbox being selected, it should stay onto the screen!!!
 
     // viewmodel connect to the backend database
     val viewModel: MealSearchViewModel = viewModel()
     val results by viewModel.searchResults.collectAsState()
 
     var searchQuery by remember { mutableStateOf("") }
-
-    // TODO: Replace the meal search feature to self backend system
 
     Column{
         // search bar for the meal
@@ -76,21 +83,35 @@ fun SearchMealFeature(viewModel: MealSearchViewModel = viewModel(factory = AppVi
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Today's Meals Title
-        Text(
-            text = "Today's Meals",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-
         // Meal List
+        // Meal List will display either checkbox or mealinfo container
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(results) { meal ->
-                MealInfoContainer(meal.foodName, meal.kcal)
+            // if the checkboxconfig exist, then display the fooditem as the check box
+            if(checkboxConfig != null){
+                items(results) { food ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { checkboxConfig.onToggleFoodItem(food) }
+                            .padding(vertical = 6.dp)
+                    ) {
+                        Checkbox(
+                            checked = checkboxConfig.selectedFoodItems.contains(food),
+                            onCheckedChange = { checkboxConfig.onToggleFoodItem(food) }
+                        )
+                        Text("${food.foodName} (${food.kcal} kcal)")
+                    }
+                }
+            }else{
+                // if checkbox doesn't exist then display simple meal info
+                items(results) { meal ->
+                    MealInfoContainer(meal)
+                }
             }
+
         }
     }
 
