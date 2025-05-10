@@ -53,8 +53,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.calorietrackerapp.ui.screens.AddNewMealRecord
 import com.example.calorietrackerapp.ui.screens.AuthLandingScreen
+import com.example.calorietrackerapp.ui.screens.DailySummaryScreen
 import com.example.calorietrackerapp.ui.screens.HomeScreen
-import com.example.calorietrackerapp.ui.screens.MealRecord
 import com.example.calorietrackerapp.ui.screens.RegisterScreen
 import com.example.calorietrackerapp.ui.screens.SearchMeal
 import com.example.calorietrackerapp.ui.theme.CalorieTrackerAppTheme
@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
                     composable("register") { RegisterScreen(navController) }
                     composable("home") { HomeScreen(navController)}
                     composable("searchMeal") { SearchMeal(navController) }
-                    composable("mealRecord") { MealRecord(navController) }
+                    composable("dailySummary") { DailySummaryScreen(navController) }
                     composable("addNewMealRecord") { AddNewMealRecord(navController) }
 
                 }

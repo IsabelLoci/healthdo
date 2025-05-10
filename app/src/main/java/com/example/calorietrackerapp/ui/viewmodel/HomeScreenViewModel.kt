@@ -31,7 +31,6 @@ fun emptySummaryForToday(): DailySummary {
 
 class HomeScreenViewModel(private val mealRepo: MealRecordRepository,
                           private val summaryRepo: DailySummaryRepository,
-                          private val crossRefRepo: FoodItemMealRecordCrossRefRepository
 ) : ViewModel() {
 
     // Fetch for today's calorie summary

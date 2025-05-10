@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.calorietrackerapp.CalorieTrackerApplication
 import com.example.calorietrackerapp.ui.screens.AddNewMealRecord
 import com.example.calorietrackerapp.ui.viewmodel.AddMealRecordViewModel
+import com.example.calorietrackerapp.ui.viewmodel.DailySummaryViewModel
 import com.example.calorietrackerapp.ui.viewmodel.HomeScreenViewModel
 import com.example.calorietrackerapp.ui.viewmodel.MealSearchViewModel
 
@@ -28,7 +29,12 @@ object AppViewModelProvider {
             HomeScreenViewModel(
                 mealRepo = calorieTrackerApplicaton().container.mealRecordRepository,
                 summaryRepo = calorieTrackerApplicaton().container.dailySummaryRepository,
-                crossRefRepo = calorieTrackerApplicaton().container.foodItemMealRecordCrossRefRepository
+            )
+        }
+
+        initializer {
+            DailySummaryViewModel(
+                summaryRepo = calorieTrackerApplicaton().container.dailySummaryRepository,
             )
         }
     }

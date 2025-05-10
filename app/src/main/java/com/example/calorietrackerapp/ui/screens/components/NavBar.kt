@@ -31,7 +31,7 @@ fun NavBar(navController: NavController){
         ) {
             TextButton(onClick = { navController.navigate("home") }) { Text("Today's Calories") }
             TextButton(onClick = { navController.navigate("searchMeal") }) { Text("Search Meal") }
-            TextButton(onClick = { navController.navigate("mealRecord") }) { Text("Meal Record") }
+            TextButton(onClick = { navController.navigate("dailySummary") }) { Text("Daily Summary") }
         }
     }
 

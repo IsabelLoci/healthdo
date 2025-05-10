@@ -32,6 +32,8 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
+
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -78,6 +80,17 @@ dependencies {
     implementation("androidx.room:room-paging:2.7.1")
 
     implementation("androidx.room:room-migration:2.7.1")
+
+    // calendar system
+    implementation("io.github.boguszpawlowski.composecalendar:composecalendar:1.2.0")
+
+    // separate artifact with utilities for working with kotlinx-datetime
+    implementation("io.github.boguszpawlowski.composecalendar:kotlinx-datetime:1.2.0")
+
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+
+
+
 
 
 
