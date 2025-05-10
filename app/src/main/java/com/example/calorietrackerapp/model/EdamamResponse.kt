@@ -1,4 +1,4 @@
-package com.example.calorietrackerapp
+package com.example.calorietrackerapp.model
 
 data class EdamamResponse(
     val hints: List<Hint>
@@ -16,3 +16,4 @@ data class Food(
 data class Nutrients(
     val ENERC_KCAL: Double
 )
+

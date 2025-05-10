@@ -1,4 +1,4 @@
-package com.example.calorietrackerapp
+package com.example.calorietrackerapp.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
