@@ -10,5 +10,6 @@ data class MealRecord(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val date: LocalDate,
-    val time: LocalTime
+    val time: LocalTime,
+    val totalKcal: Int
 )

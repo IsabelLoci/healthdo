@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.calorietrackerapp.data.entity.DailySummary
 
 @Composable
 fun CalorieProgressBar(label: String, progress: Float, color: Color) {
@@ -83,15 +84,19 @@ fun StaticCircularProgressBar(caloriesLeft: Int, progress: Float) {
 
 @Composable
 fun CalorieSummaryDashboard(
-    caloriesLeft: Int,
-    totalCalories: Int,
-    consumedProgress: Float,
-    burnedProgress: Float,
-    netProgress: Float
+    dailySummary: DailySummary,
+    calorieLimit: Int = 2000
 ) {
+    val consumed = dailySummary.calorieConsumed
+    val burned = dailySummary.calorieBurned
+    val net = dailySummary.netCalorie
 
-    // calculate the progress based on the given value
-    val progress = 1 - (caloriesLeft.toFloat() / totalCalories)
+    val caloriesLeft = (calorieLimit - consumed).coerceAtLeast(0)
+    val consumedProgress = consumed.toFloat() / calorieLimit
+    val burnedProgress = burned.toFloat() / calorieLimit
+    val netProgress = net.toFloat() / calorieLimit
+    val overallProgress = ((calorieLimit-consumed).toFloat() / calorieLimit)
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -103,21 +108,22 @@ fun CalorieSummaryDashboard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
-                .background(Color(0xFF55745D))
-                .padding(16.dp),
+                .height(200.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
-            StaticCircularProgressBar(caloriesLeft, progress)
+            // Circular progress (left side)
+            StaticCircularProgressBar(
+                caloriesLeft = caloriesLeft,
+                progress = overallProgress
+            )
 
             Spacer(modifier = Modifier.width(24.dp))
 
+            // Progress bars (right side)
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // the calories report progress bar
                 CalorieProgressBar("Consumed", consumedProgress, Color(0xFFFFF1B4))
                 CalorieProgressBar("Burned", burnedProgress, Color(0xFFEEABA5))
                 CalorieProgressBar("Net", netProgress, Color(0xFFB3F3CE))
@@ -126,9 +132,4 @@ fun CalorieSummaryDashboard(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun CalorieSummaryDashboardPreview() {
-    CalorieSummaryDashboard(500, 2500, 0.4f, 0.2f, 0.2f)
-}
 

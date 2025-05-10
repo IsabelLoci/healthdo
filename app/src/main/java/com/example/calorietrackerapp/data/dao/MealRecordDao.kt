@@ -21,6 +21,7 @@ interface MealRecordDao {
     @Query("SELECT * FROM meal_records WHERE id = :mealId")
     fun getMealWithFoods(mealId: Int): Flow<MealRecordWithFoods>
 
-    @Query("SELECT * FROM meal_records WHERE date = :date")
-    fun getMealsByDate(date: String): Flow<List<MealRecord>>
+    @Transaction
+    @Query("SELECT * FROM meal_records WHERE date = :date ORDER BY time ASC")
+    fun getMealsByDate(date: String): Flow<List<MealRecordWithFoods>?>
 }

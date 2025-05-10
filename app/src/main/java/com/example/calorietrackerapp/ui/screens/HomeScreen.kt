@@ -1,5 +1,8 @@
 package com.example.calorietrackerapp.ui.screens
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,13 +43,25 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.calorietrackerapp.ui.AppViewModelProvider
 import com.example.calorietrackerapp.ui.screens.components.CalorieSummaryDashboard
+import com.example.calorietrackerapp.ui.screens.components.MealRecordContainer
 import com.example.calorietrackerapp.ui.viewmodel.MealSearchViewModel
 import com.example.calorietrackerapp.ui.screens.components.NavBar
 import com.example.calorietrackerapp.ui.screens.components.SearchMealFeature
+import com.example.calorietrackerapp.ui.viewmodel.HomeScreenViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, viewModel: HomeScreenViewModel = viewModel(factory = AppViewModelProvider.Factory)) {
+
+    val dailySummary = viewModel.todaySummary.collectAsState()
+    val todayMealRecords = viewModel.getTodayMeals().collectAsState(initial = emptyList())
+
+    val mealList = todayMealRecords.value ?: emptyList()
+
+
+    Log.d("From HomeScreen", todayMealRecords.toString())
 
     Box(
         modifier = Modifier
@@ -71,9 +86,29 @@ fun HomeScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(20.dp))
 
             // Calorie Summary Dashboard to report to the user about their status
-            CalorieSummaryDashboard(500, 2500, 0.4f, 0.2f, 0.2f)
+            CalorieSummaryDashboard(dailySummary.value)
 
             Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                text = "Today's Meals:",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+            if (mealList.isEmpty()){
+                Text("You haven't add any meal today")
+            }
+            else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                ) {
+                    items(mealList) { mealRecord ->
+                        MealRecordContainer(mealRecordWithFoods = mealRecord)
+                    }
+                }
+            }
 
             SearchMealFeature()
 
@@ -88,11 +123,4 @@ fun HomeScreen(navController: NavController) {
 
         NavBar(navController)
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    val navController = rememberNavController()
-    HomeScreen(navController = navController)
 }

@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 data class MealRecordUiState(
     val time: String = "",
@@ -64,12 +65,16 @@ class AddMealRecordViewModel(
         if (_selectedFoodItems.isEmpty()) return
 
         viewModelScope.launch {
-            val currentDate = LocalDate.now()
-            val currentTime = LocalTime.now()
+            //Convert string to date and time with correct format
+            val dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+            val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
+            val currentDate = LocalDate.parse(uiState.date, dateFormatter)
+            val currentTime = LocalTime.parse(uiState.time, timeFormatter)
             val totalKcal = _selectedFoodItems.sumOf { it.kcal }
 
             // insert meal record into the db
-            val meal = MealRecord(date = currentDate, time = currentTime)
+            val meal = MealRecord(date = currentDate, time = currentTime, totalKcal = totalKcal)
             val mealId = mealRepo.insertMealRecord(meal).toInt()
 
             // Insert the food items into the cross refs
