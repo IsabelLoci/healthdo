@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -115,16 +117,34 @@ fun DailySummaryScreen(
             },
             modifier = Modifier
                 .padding(horizontal = 8.dp)
-                .height(420.dp)
+                .height(400.dp)
         )
 
 
-        Spacer(modifier = Modifier.padding(8.dp))
 
 
+        // display calorie summary dashboard and more detail button for that specific day
         summary?.let {
-            CalorieSummaryDashboard(it)
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                CalorieSummaryDashboard(it)
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Button(
+                    onClick = {
+                        navController.navigate("summaryDetailPage/${selectedDate}")
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF55745D)
+                    )
+                ) {
+                    Text("More detail", color = Color.White)
+                }
+
+
+            }
         } ?: Text("No data for ${selectedDate}")
+
     }
 
     NavBar(navController)

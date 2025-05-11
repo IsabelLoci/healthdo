@@ -10,6 +10,7 @@ import com.example.calorietrackerapp.ui.viewmodel.AddMealRecordViewModel
 import com.example.calorietrackerapp.ui.viewmodel.DailySummaryViewModel
 import com.example.calorietrackerapp.ui.viewmodel.HomeScreenViewModel
 import com.example.calorietrackerapp.ui.viewmodel.MealSearchViewModel
+import com.example.calorietrackerapp.ui.viewmodel.SummaryDetailViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
@@ -35,6 +36,12 @@ object AppViewModelProvider {
         initializer {
             DailySummaryViewModel(
                 summaryRepo = calorieTrackerApplicaton().container.dailySummaryRepository,
+            )
+        }
+
+        initializer {
+            SummaryDetailViewModel(
+                mealRepo = calorieTrackerApplicaton().container.mealRecordRepository,
             )
         }
     }
