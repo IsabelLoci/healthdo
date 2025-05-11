@@ -30,9 +30,9 @@ fun MealRecordContainer(mealRecordWithFoods: MealRecordWithFoods) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp, horizontal = 12.dp)
+            .padding(vertical = 6.dp, horizontal = 6.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(Color(0xFFF2F2F2))
+            .background(Color(0xFFE8EFE6))
             .padding(16.dp)
     ) {
         Column {

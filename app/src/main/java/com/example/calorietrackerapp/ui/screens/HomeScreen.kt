@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -48,6 +50,7 @@ import com.example.calorietrackerapp.ui.screens.components.CalorieSummaryDashboa
 import com.example.calorietrackerapp.ui.screens.components.MealRecordContainer
 import com.example.calorietrackerapp.ui.viewmodel.MealSearchViewModel
 import com.example.calorietrackerapp.ui.screens.components.NavBar
+import com.example.calorietrackerapp.ui.screens.components.ScreenTitle
 import com.example.calorietrackerapp.ui.screens.components.SearchMealFeature
 import com.example.calorietrackerapp.ui.viewmodel.HomeScreenViewModel
 
@@ -66,7 +69,6 @@ fun HomeScreen(navController: NavController, viewModel: HomeScreenViewModel = vi
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
     ) {
         Column(
             modifier = Modifier
@@ -77,11 +79,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeScreenViewModel = vi
             Spacer(modifier = Modifier.height(20.dp))
 
             // Today header
-            Text(
-                text = "Today",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold
-            )
+            ScreenTitle("Today")
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -97,12 +95,11 @@ fun HomeScreen(navController: NavController, viewModel: HomeScreenViewModel = vi
                 modifier = Modifier.padding(vertical = 8.dp)
             )
             if (mealList.isEmpty()){
-                Text("You haven't add any meal today")
+                Text("Is it time to eat something?")
             }
             else {
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.padding(horizontal = 16.dp)
                 ) {
                     items(mealList) { mealRecord ->
                         MealRecordContainer(mealRecordWithFoods = mealRecord)
@@ -110,16 +107,24 @@ fun HomeScreen(navController: NavController, viewModel: HomeScreenViewModel = vi
                 }
             }
 
-            SearchMealFeature()
-
         }
 
         FloatingActionButton(
-            onClick = { navController.navigate("AddNewMealRecord")},
-            modifier = Modifier.align(Alignment.BottomEnd).padding(end=16.dp, bottom = 72.dp)
+            onClick = { navController.navigate("AddNewMealRecord") },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .zIndex(1f)
+                .padding(end = 16.dp, bottom = 72.dp),
+            containerColor = Color(0xFF55745D),
+            shape = CircleShape
         ) {
-            Icon(Icons.Default.Add, contentDescription = "Add")
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Add",
+                tint = Color.White
+            )
         }
+
 
         NavBar(navController)
     }

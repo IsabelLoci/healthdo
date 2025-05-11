@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -85,33 +86,44 @@ fun SearchMealFeature(viewModel: MealSearchViewModel = viewModel(factory = AppVi
 
         // Meal List
         // Meal List will display either checkbox or mealinfo container
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            // if the checkboxconfig exist, then display the fooditem as the check box
-            if(checkboxConfig != null){
-                items(results) { food ->
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { checkboxConfig.onToggleFoodItem(food) }
-                            .padding(vertical = 6.dp)
-                    ) {
-                        Checkbox(
-                            checked = checkboxConfig.selectedFoodItems.contains(food),
-                            onCheckedChange = { checkboxConfig.onToggleFoodItem(food) }
-                        )
-                        Text("${food.foodName} (${food.kcal} kcal)")
+        if (results.isEmpty()){
+            Text(
+                text = "Does it sound like a good day to have some salad?",
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                fontSize = 14.sp,
+                color = Color.Gray,
+                textAlign = TextAlign.Center
+            )
+
+        } else{
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                // if the checkboxconfig exist, then display the fooditem as the check box
+                if(checkboxConfig != null){
+                    items(results) { food ->
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { checkboxConfig.onToggleFoodItem(food) }
+                                .padding(vertical = 6.dp)
+                        ) {
+                            Checkbox(
+                                checked = checkboxConfig.selectedFoodItems.contains(food),
+                                onCheckedChange = { checkboxConfig.onToggleFoodItem(food) }
+                            )
+                            Text("${food.foodName} (${food.kcal} kcal)")
+                        }
+                    }
+                }else{
+                    // if checkbox doesn't exist then display simple meal info
+                    items(results) { meal ->
+                        MealInfoContainer(meal)
                     }
                 }
-            }else{
-                // if checkbox doesn't exist then display simple meal info
-                items(results) { meal ->
-                    MealInfoContainer(meal)
-                }
-            }
 
+            }
         }
     }
 

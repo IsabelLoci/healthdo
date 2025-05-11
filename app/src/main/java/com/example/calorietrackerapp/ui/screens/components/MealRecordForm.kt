@@ -80,14 +80,6 @@ fun MealRecordForm(
 
     Column(modifier = Modifier.padding(16.dp)) {
 
-        // adjust the form type to update meal record or add meal record
-        Text(
-            text = if (isEditing) "Edit Meal Record" else "Add Meal Record",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
         // Date input
         OutlinedTextField(
             value = uiState.date,

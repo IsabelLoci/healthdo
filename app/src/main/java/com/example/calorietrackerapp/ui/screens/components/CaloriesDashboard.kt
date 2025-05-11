@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -58,28 +59,48 @@ fun CalorieProgressBar(label: String, progress: Float, color: Color) {
 @Composable
 fun StaticCircularProgressBar(caloriesLeft: Int, progress: Float) {
     Box(
-        modifier = Modifier
-            .size(100.dp),
+        modifier = Modifier.size(100.dp),
         contentAlignment = Alignment.Center
-    ){
-        CircularProgressIndicator(
-            progress = {
-                progress
-            },
-            modifier = Modifier.size(95.dp),
-            color = Color(0xFFF16F62),
-            strokeWidth = 8.dp,
-        )
+    ) {
+        Canvas(modifier = Modifier.size(95.dp)) {
+            val strokeWidth = 8.dp.toPx()
+            val diameter = size.minDimension
+            val radius = diameter / 2
+            val center = Offset(radius, radius)
+            val sweepAngle = 360 * progress
+
+            // Background track (remaining progress)
+            drawArc(
+                color = Color(0xBFE8D0CE),
+                startAngle = -90f,
+                sweepAngle = 360f,
+                useCenter = false,
+                topLeft = Offset(0f, 0f),
+                size = size,
+                style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+            )
+
+            // Foreground progress
+            drawArc(
+                color = Color(0xFFF16F62),
+                startAngle = -90f,
+                sweepAngle = sweepAngle,
+                useCenter = false,
+                topLeft = Offset(0f, 0f),
+                size = size,
+                style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+            )
+        }
 
         Text(
-            "$caloriesLeft kcal Left",
+            text = "$caloriesLeft kcal Left",
             color = Color.White,
-            fontSize = 8.sp,
+            fontSize = 10.sp,
             fontWeight = FontWeight.Bold
         )
     }
-
 }
+
 
 
 @Composable
