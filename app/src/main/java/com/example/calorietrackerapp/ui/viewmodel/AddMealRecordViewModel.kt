@@ -24,13 +24,12 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 data class MealRecordUiState(
-    val time: String = "",
-    val date: String = ""
+    val time: String = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")),
+    val date: String = LocalDate.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
 ) {
     val isValid: Boolean
         get() = time.isNotBlank()
 }
-
 
 class AddMealRecordViewModel(
     private val mealRepo: MealRecordRepository,
